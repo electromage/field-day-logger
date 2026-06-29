@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% block nav_setup %}active{% endblock %}
+
+{% block content %}
+<section class="panel">
+  <h2>Station &amp; contest setup</h2>
+  <p class="help">This information identifies your station in the log and fills the Cabrillo header
+     that you submit to the ARRL. Your sent exchange is your <b>class</b> + <b>section</b>.</p>
+
+  <form id="setupForm">
+    <div class="setup-grid">
+      <div class="field">
+        <label>Station callsign</label>
+        <input name="my_call" value="{{ config.my_call }}" style="text-transform:uppercase" placeholder="K1ABC">
+        <div class="help">The callsign your group operates under.</div>
+      </div>
+      <div class="field">
+        <label>Your class (sent exchange)</label>
+        <input name="my_class" value="{{ config.my_class }}" style="text-transform:uppercase" placeholder="3A">
+        <div class="help">Number of transmitters + category letter, e.g. <b>3A</b>.</div>
+      </div>
+
+      <div class="field">
+        <label>Your ARRL/RAC section</label>
+        <input name="my_section" value="{{ config.my_section }}" list="section-list" style="text-transform:uppercase" placeholder="NTX">
+      </div>
+      <div class="field">
+        <label>Power multiplier</label>
+        <select name="power_multiplier">
+          {% for code, label in power_multipliers.items() %}
+            <option value="{{ code }}" {% if config.power_multiplier == code %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Category — power</label>
+        <select name="category_power">
+          {% for p in ["QRP", "LOW", "HIGH"] %}
+            <option value="{{ p }}" {% if config.category_power == p %}selected{% endif %}>{{ p }}</option>
+          {% endfor %}
+        </select>
+        <div class="help">QRP ≤5 W · LOW ≤150 W · HIGH &gt;150 W.</div>
+      </div>
+      <div class="field">
+        <label>Category — operator</label>
+        <select name="category_operator">
+          {% for p in ["SINGLE-OP", "MULTI-OP", "CHECKLOG"] %}
+            <option value="{{ p }}" {% if config.category_operator == p %}selected{% endif %}>{{ p }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Category — station</label>
+        <select name="category_station">
+          {% for p in ["FIXED", "FIELD", "MOBILE", "PORTABLE"] %}
+            <option value="{{ p }}" {% if config.category_station == p %}selected{% endif %}>{{ p }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="field">
+        <label>Number of transmitters</label>
+        <input name="category_transmitter" value="{{ config.category_transmitter }}" placeholder="ONE / TWO / 3 …">
+      </div>
+
+      <div class="field">
+        <label>Bonus points (manual)</label>
+        <input name="bonus_points" value="{{ config.bonus_points }}" placeholder="0">
+        <div class="help">Total of any bonus points claimed (100% emergency power, public location, etc.).</div>
+      </div>
+      <div class="field">
+        <label>Club / group name</label>
+        <input name="club_name" value="{{ config.club_name }}">
+      </div>
+
+      <div class="field">
+        <label>Operators (call list)</label>
+        <input name="operators" value="{{ config.operators }}" placeholder="K1ABC, W1XYZ, …">
+      </div>
+      <div class="field">
+        <label>Contact name</label>
+        <input name="contact_name" value="{{ config.contact_name }}">
+      </div>
+
+      <div class="field">
+        <label>Mailing address</label>
+        <input name="address" value="{{ config.address }}">
+      </div>
+      <div class="field">
+        <label>City / State / ZIP</label>
+        <input name="address_city" value="{{ config.address_city }}">
+      </div>
+
+      <div class="field">
+        <label>Email</label>
+        <input name="email" value="{{ config.email }}">
+      </div>
+      <div class="field">
+        <label>Soapbox (one line per comment)</label>
+        <textarea name="soapbox" rows="2">{{ config.soapbox }}</textarea>
+      </div>
+    </div>
+
+    <div class="save-bar">
+      <button type="submit">Save setup</button>
+      <span class="saved-msg" id="savedMsg">✓ Saved</span>
+    </div>
+  </form>
+
+  <div style="margin-top:1.6rem;border-top:1px solid var(--line);padding-top:1rem">
+    <h2>Class letter reference</h2>
+    <table style="max-width:560px">
+      {% for letter, desc in class_letters.items() %}
+        <tr><td style="color:var(--accent);font-weight:700">{{ letter }}</td><td style="white-space:normal">{{ desc }}</td></tr>
+      {% endfor %}
+    </table>
+  </div>
+</section>
+
+<datalist id="section-list"></datalist>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+<script>FieldDay.initSetup();</script>
+{% endblock %}

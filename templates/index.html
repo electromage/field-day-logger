@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block nav_log %}active{% endblock %}
+
+{% block scorestrip %}
+<div class="scorestrip" id="scorestrip">
+  <div class="stat"><div class="label">QSOs</div><div class="value" id="s-total">0</div></div>
+  <div class="stat"><div class="label">CW</div><div class="value" id="s-cw">0</div></div>
+  <div class="stat"><div class="label">Phone</div><div class="value" id="s-ph">0</div></div>
+  <div class="stat"><div class="label">Digital</div><div class="value" id="s-dg">0</div></div>
+  <div class="stat"><div class="label">Sections</div><div class="value" id="s-sect">0</div></div>
+  <div class="stat"><div class="label">QSO pts</div><div class="value" id="s-pts">0</div></div>
+  <div class="stat score"><div class="label">Claimed score</div><div class="value" id="s-score">0</div></div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="grid">
+  <!-- Entry -->
+  <section class="panel">
+    <h2>Log a contact</h2>
+    <form class="entry-form" id="entryForm" autocomplete="off">
+      <div class="field-row">
+        <div class="field call">
+          <label for="f-call">Callsign</label>
+          <input class="call-input" id="f-call" name="call" placeholder="W1AW" autofocus>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="f-band">Band</label>
+          <select id="f-band" name="band"></select>
+        </div>
+        <div class="field">
+          <label for="f-mode">Mode</label>
+          <select id="f-mode" name="mode"></select>
+        </div>
+        <div class="field">
+          <label for="f-class">Class</label>
+          <input id="f-class" name="their_class" placeholder="3A" style="text-transform:uppercase">
+        </div>
+        <div class="field">
+          <label for="f-section">Section</label>
+          <input id="f-section" name="their_section" placeholder="NTX" list="section-list" style="text-transform:uppercase">
+        </div>
+      </div>
+
+      <details>
+        <summary style="cursor:pointer;color:var(--muted);font-size:.82rem">More fields (RST, freq, notes)…</summary>
+        <div class="field-row" style="margin-top:.6rem">
+          <div class="field"><label>RST sent</label><input id="f-rsts" name="rst_sent" placeholder="59"></div>
+          <div class="field"><label>RST rcvd</label><input id="f-rstr" name="rst_rcvd" placeholder="59"></div>
+          <div class="field"><label>Freq (kHz)</label><input id="f-freq" name="freq" placeholder="optional"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Notes</label><input id="f-notes" name="notes"></div>
+        </div>
+      </details>
+
+      <div id="callout" class="callout info">Enter a callsign to begin. Time is stamped automatically in UTC.</div>
+
+      <button type="submit" class="btn-log" id="logBtn">Log Contact &nbsp;⏎</button>
+    </form>
+
+    <div class="field-row" style="margin-top:.9rem">
+      <div class="field">
+        <label for="f-op">Your operator call (this position)</label>
+        <input id="f-op" name="operator" placeholder="e.g. K1ABC" style="text-transform:uppercase">
+      </div>
+      <div class="field">
+        <label for="f-station">Station / position label</label>
+        <input id="f-station" name="station" placeholder="e.g. CW-1, GOTA">
+      </div>
+    </div>
+  </section>
+
+  <!-- Live log -->
+  <section class="panel">
+    <h2>Live log &nbsp;<span class="pill" id="livecount"></span></h2>
+    <div class="log-scroll">
+      <table>
+        <thead>
+          <tr><th>UTC</th><th>Call</th><th>Band</th><th>Md</th><th>Class</th><th>Sect</th><th>Op</th><th></th></tr>
+        </thead>
+        <tbody id="logBody"></tbody>
+      </table>
+    </div>
+  </section>
+</div>
+
+<datalist id="section-list"></datalist>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+<script>FieldDay.initLogger();</script>
+{% endblock %}

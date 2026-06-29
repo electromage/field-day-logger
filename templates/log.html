@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block nav_view %}active{% endblock %}
+
+{% block content %}
+<section class="panel">
+  <div class="toolbar">
+    <input type="search" id="search" placeholder="Filter by callsign…">
+    <span class="pill" id="count"></span>
+    <div class="spacer"></div>
+    <a href="/export/cabrillo"><button class="secondary">⬇ Cabrillo (.cbr)</button></a>
+    <a href="/export/adif"><button class="secondary">⬇ ADIF (.adi)</button></a>
+  </div>
+
+  <div class="log-scroll" style="max-height:74vh">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th><th>Date</th><th>UTC</th><th>Call</th><th>Band</th><th>Md</th>
+          <th>Class</th><th>Sect</th><th>RST</th><th>Op</th><th>Station</th><th></th>
+        </tr>
+      </thead>
+      <tbody id="fullBody"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Inline edit modal (simple) -->
+<dialog id="editDlg" style="background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:12px;padding:1.2rem;width:min(520px,92vw)">
+  <h2 style="margin-top:0">Edit contact</h2>
+  <form id="editForm" class="entry-form">
+    <input type="hidden" id="e-id">
+    <div class="field-row">
+      <div class="field call"><label>Call</label><input id="e-call" style="text-transform:uppercase"></div>
+      <div class="field"><label>Date (UTC)</label><input id="e-date" placeholder="YYYY-MM-DD"></div>
+      <div class="field"><label>Time (UTC)</label><input id="e-time" placeholder="HHMM"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Band</label><select id="e-band"></select></div>
+      <div class="field"><label>Mode</label><select id="e-mode"></select></div>
+      <div class="field"><label>Class</label><input id="e-class" style="text-transform:uppercase"></div>
+      <div class="field"><label>Section</label><input id="e-section" list="section-list" style="text-transform:uppercase"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>RST sent</label><input id="e-rsts"></div>
+      <div class="field"><label>RST rcvd</label><input id="e-rstr"></div>
+      <div class="field"><label>Operator</label><input id="e-op" style="text-transform:uppercase"></div>
+    </div>
+    <div class="callout info hidden" id="e-err"></div>
+    <div class="save-bar">
+      <button type="submit">Save</button>
+      <button type="button" class="secondary" id="e-cancel">Cancel</button>
+    </div>
+  </form>
+</dialog>
+
+<datalist id="section-list"></datalist>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+<script>FieldDay.initFullLog();</script>
+{% endblock %}

@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Field Day Logger{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">FIELD<span class="dot">·</span>DAY <span style="color:var(--muted);font-weight:400;font-size:.8rem">logger</span></div>
+    <nav>
+      <a href="/" class="{% block nav_log %}{% endblock %}">Log</a>
+      <a href="/log" class="{% block nav_view %}{% endblock %}">Full Log</a>
+      <a href="/setup" class="{% block nav_setup %}{% endblock %}">Setup</a>
+    </nav>
+    <div class="spacer"></div>
+    <span class="conn" id="conn">connecting…</span>
+    <span class="station-id">
+      {{ config.my_call or 'NOCALL' }} &nbsp;<b>{{ config.my_class or '?' }}</b> {{ config.my_section or '??' }}
+    </span>
+  </header>
+
+  {% block scorestrip %}{% endblock %}
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <script>
+    window.CONFIG = {{ config | tojson }};
+  </script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

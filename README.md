@@ -1,12 +1,15 @@
 # Field Day Logger
 
-A browser-based, multi-station logger for **ARRL Field Day** — the same job as
-N3FJP's Field Day Contest Log, but served over the network so every operator
-logs from their own browser into one shared database. Output is a fully
-**Cabrillo 3.0** file accepted by the ARRL log-checking robot.
+A simple, browser-based, multi-station logger for **ARRL Field Day**. Run it on
+one computer and every operator logs from their own browser into a single shared
+database. Output is a fully **Cabrillo 3.0** file accepted by the ARRL
+log-checking robot.
 
-Built to run off a single laptop in a field with no internet: Python standard
-library + Flask + SQLite, nothing else to install or configure.
+The goal is something deliberately small and unfussy that runs **anywhere** —
+Linux, macOS, Windows, or a Raspberry Pi — with no operating system lock-in and
+nothing to buy. If a device has a web browser, it can log; the server is just
+Python standard library + Flask + SQLite, so it happily runs off a single
+laptop in a field with no internet and nothing else to install or configure.
 
 ---
 
@@ -419,4 +422,9 @@ correction propagates to all stations and the score.
 
 ## License
 
-Released under the [MIT License](LICENSE).
+Dedicated to the public domain under [CC0 1.0 Universal](LICENSE).
+
+To the extent possible under law, Matt Blank (KE7NOR) has waived all copyright
+and related or neighboring rights to Field Day Logger. You can copy, modify,
+distribute, and use the software, including for commercial purposes, all
+without asking permission or providing attribution.
